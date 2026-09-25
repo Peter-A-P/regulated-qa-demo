@@ -1,0 +1,30 @@
+name: gate
+
+# The release gate on every pull request that changes the prompt, the model or the rules.
+# pull_request, never pull_request_target: the gate sends the pull request's prompt to vendors
+# with this repository's keys, and pull_request_target would hand those keys to a fork.
+on:
+  pull_request:
+    paths: [prompts/**, gate.yaml]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      # Haiku 4.5 answers; Gemini 3.8 Flash is the judge (completeness, kappa 0.914).
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Pinned to one commit of the gate, both the action and the library it runs, so the gate
+      # cannot move under a pull request that has not changed. Moved only by a pull request here.
+      - uses: Peter-A-P/ai-release-gate/action@562b25d80282b96a5692cbeef6ef38cd80ac78e3
+        with:
+          gate-ref: 562b25d80282b96a5692cbeef6ef38cd80ac78e3
