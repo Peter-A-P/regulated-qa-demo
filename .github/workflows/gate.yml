@@ -25,6 +25,6 @@ jobs:
           fetch-depth: 0
       # Pinned to one commit of the gate, both the action and the library it runs, so the gate
       # cannot move under a pull request that has not changed. Moved only by a pull request here.
-      - uses: Peter-A-P/ai-release-gate/action@ac89380960d0d38e2f3ec413ffdefd81b3ff93e9
+      - uses: Peter-A-P/ai-release-gate/action@0c5fff68398e93288bfeb11663181dcbda98757e
         with:
-          gate-ref: ac89380960d0d38e2f3ec413ffdefd81b3ff93e9
+          gate-ref: 0c5fff68398e93288bfeb11663181dcbda98757e
